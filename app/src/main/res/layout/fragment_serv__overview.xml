@@ -1,0 +1,18 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="com.application.sweetiean.stlservicing.Serv_OverviewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+        <ListView
+            android:id="@+id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+
+
+</android.support.v4.widget.NestedScrollView>
