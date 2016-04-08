@@ -1,2 +1,2 @@
 # STLMaintenance
-Project File for Maintenance team data collection application
+Project folder for Maintenance team data collection application
