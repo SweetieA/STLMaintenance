@@ -32,7 +32,7 @@ public class webService {
     private static String NAMESPACE = "http://tempuri.org/";
     //Webservice URL - It is asmx file location hosted in the server in case of .Net
     //Change the IP address to your machine IP address
-    //private static String URL = "http://192.168.251.209/taskservice/uploaddata.asmx"; // new address added
+    private static String URL = "http://192.168.251.111/taskservice/uploaddata.asmx"; // new address added
     private static String URL_Main = MaintenanceActivity.url;
     private static String URL_Serv = ServicingActivity.url;
     //SOAP Action URI again http://tempuri.org
@@ -160,7 +160,7 @@ public class webService {
         // Set output SOAP object
         envelope.setOutputSoapObject(request);
         // Create HTTP call object
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL_Main);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 
         try {
             // Invoke web service
@@ -196,7 +196,7 @@ public class webService {
         // Set output SOAP object
         envelope.setOutputSoapObject(request);
         // Create HTTP call object
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL_Main);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 
         try {
             // Invoke web service

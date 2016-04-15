@@ -16,11 +16,13 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,8 +48,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class Serv_BaseDataFragment extends Fragment implements OnMapReadyCallback {
 
     View view;
-    public static EditText sysaid;
-    public static EditText customer, siteId, address;
+    public static EditText sysaid, address;
+    public static AutoCompleteTextView customer;
     public static TextView locationCoordinates;
     public static Spinner taskSpinner, regionSpinner;
     Button sign_STL, sign_client, location;
@@ -93,12 +95,25 @@ public class Serv_BaseDataFragment extends Fragment implements OnMapReadyCallbac
             sysaid.setError("Sysaid Id is required!");
         }
 
-        customer = (EditText)view.findViewById(R.id.customerEditText);
+        customer = (AutoCompleteTextView)view.findViewById(R.id.accntAutoCompleteTextView);
         if(customer.getText().toString().length() == 0){
             customer.setError("Customer is required!");
         }
+        MaintenanceAppDB sqlitedb = new MaintenanceAppDB(this.getActivity());
+        sqlitedb.openForRead();
 
-        siteId = (EditText)view.findViewById(R.id.siteIdEditText);
+        String[] accounts = sqlitedb.getAllCustNames();
+
+        for(int i = 0; i < accounts.length; i++)
+        {
+            Log.i(this.toString(), accounts[i]);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, accounts);
+        customer.setAdapter(adapter);
+        customer.setThreshold(1);
+
+
         address = (EditText)view.findViewById(R.id.addressEditText);
         locationCoordinates = (TextView)view.findViewById(R.id.locationTextView);
 

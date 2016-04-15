@@ -69,16 +69,18 @@ public class uploadServToERP extends AsyncTask<String, Integer, Void> {
         if(Serv_OverviewFragment.itemClicked.equals("uploadServ_file")) {
 
             Toast.makeText(context, file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Upload to ERP complete!!!", Toast.LENGTH_LONG).show();
 
         }else if(Serv_OverviewFragment.itemClicked.equals("uploadServ_data")) {
 
             Toast.makeText(context, Service_Info, Toast.LENGTH_SHORT).show();
             Toast.makeText(context, Servicing, Toast.LENGTH_SHORT).show();
             Toast.makeText(context, Replacement, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Upload to ERP complete!!!", Toast.LENGTH_LONG).show();
 
         }
 
-        Toast.makeText(context, "Upload to ERP complete!!!", Toast.LENGTH_LONG).show();
+
 
     }
 

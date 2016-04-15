@@ -1,5 +1,6 @@
 package com.application.sweetiean.stlservicing;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,7 +21,12 @@ import android.widget.Toast;
 import com.application.sweetiean.stlmaintenance.MaintenanceAppDB;
 import com.application.sweetiean.stlmaintenance.R;
 import com.application.sweetiean.stlmaintenance.Utility;
+import com.application.sweetiean.stlmaintenance.downloadFromERP;
 import com.application.sweetiean.stlmaintenance.webService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +35,11 @@ public class ServicingActivity extends AppCompatActivity{
 
     public static String url, DeviceId;
     public static webService Serv_axcall;
+    public static String itemClicked;
+    public static String jsonString;
     SharedPreferences settings;
 
-    static String sysaid, taskType, customer, siteId, address, region, locationCoordinates, stl_rep_name,
+    static String sysaid, taskType, customer, customer_account, address, region, locationCoordinates, stl_rep_name,
             stl_rep_post, stl_rep_sign, client_rep_name, client_rep_post, client_rep_sign, dvrFirmware,
             firmwareVersion, serv_workstation, testCP, cleanPC, serv_workstationSerial, remarks, serv_dvr,
             serv_dvrSerial, cleanCam, serv_checkUPS, serv_UPS, serv_UPSSerial, status, repl_checkUPS,
@@ -40,6 +49,12 @@ public class ServicingActivity extends AppCompatActivity{
             powerSupply, _12vPwrSupply, _12vPwrBox, monitor, monitorSerial, otherIssues, issues;
 
 
+    public static String custName, custAccount, customer_full;
+    private static final String TAG_NAME_CUSTOMER = "AccountName";
+    private static final String TAG_NUMBER_CUSTOMER = "AccountNumber";
+
+
+    public static Context con;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +62,7 @@ public class ServicingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_servicing);
 
         init();
+        con = this;
 
     }
 
@@ -123,7 +139,6 @@ public class ServicingActivity extends AppCompatActivity{
         sysaid = Serv_BaseDataFragment.sysaid.getText().toString();
         taskType = Serv_BaseDataFragment.taskSpinner.getSelectedItem().toString();
         customer = Serv_BaseDataFragment.customer.getText().toString();
-        siteId = Serv_BaseDataFragment.siteId.getText().toString();
         address = Serv_BaseDataFragment.address.getText().toString();
         region = Serv_BaseDataFragment.regionSpinner.getSelectedItem().toString();
         locationCoordinates = Serv_BaseDataFragment.locationCoordinates.getText().toString();
@@ -204,7 +219,7 @@ public class ServicingActivity extends AppCompatActivity{
         String sql_sysaid = sysaid;
         String sql_taskType = taskType;
         String sql_customer = customer;
-        String sql_siteId = siteId;
+        String sql_site = customer_account;
         String sql_address = address;
         String sql_region = region;
         String sql_location = locationCoordinates;
@@ -217,7 +232,8 @@ public class ServicingActivity extends AppCompatActivity{
 
         MaintenanceAppDB base_data_record = new MaintenanceAppDB(this);
         base_data_record.openForRead();
-        base_data_record.createServBaseDataRecord(sql_date, sql_sysaid, sql_taskType, sql_customer, sql_siteId,
+
+        base_data_record.createServBaseDataRecord(sql_date, sql_sysaid, sql_taskType, sql_customer,sql_site,
                 sql_address, sql_region, sql_location, sql_stlRepName, sql_stlRepPost,
                 sql_stlRepSign, sql_clientRepName, sql_clientRepPost, sql_clientRepSign);
         base_data_record.close();
@@ -302,6 +318,56 @@ public class ServicingActivity extends AppCompatActivity{
     }
 
 
+    public static void InsertCustIntoDB()
+    {
+
+
+        try{
+            JSONArray jarray =new JSONArray(jsonString);
+
+            MaintenanceAppDB sqlitedb = new MaintenanceAppDB(con);
+            sqlitedb.deleteAllCustomers();
+            sqlitedb.openForRead();
+
+
+
+            for (int count = 0; count < jarray.length(); count++) {
+                JSONObject obj = jarray.getJSONObject(count);
+                custName = obj.getString(TAG_NAME_CUSTOMER);
+                custAccount = obj.getString(TAG_NUMBER_CUSTOMER);
+
+                customer_full = custName +" : " + custAccount;
+
+                ContentValues cv = new ContentValues();
+                cv.put(MaintenanceAppDB.CUSTOMER_NAME, customer_full);
+                cv.put(MaintenanceAppDB.CUSTOMER_ACCOUNT, custAccount);
+                sqlitedb.maintenanceAppDatabase.insert(MaintenanceAppDB.TABLE_CUSTOMERS, null, cv);
+            }
+
+            int counter = sqlitedb.getCustomersCount();
+            Log.i("Customers", String.valueOf(counter));
+
+            if(counter == jarray.length()){
+                Toast.makeText(con, String.valueOf(counter)+" Customers Saved to Database Successfully!", Toast.LENGTH_SHORT).show();
+
+            }
+            else {
+                Toast.makeText(con, "FAILED!!!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            sqlitedb.close();
+        }
+        catch (JSONException e){
+
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
 
     public void save_final(){
 
@@ -350,7 +416,7 @@ public class ServicingActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_maintenance, menu);
+        getMenuInflater().inflate(R.menu.menu_servicing, menu);
         return true;
     }
 
@@ -369,6 +435,14 @@ public class ServicingActivity extends AppCompatActivity{
         }
         if (id == R.id.save_tickets) {
             save_final();
+            return true;
+        }
+        if (id == R.id.get_customers) {
+            itemClicked = "customers";
+            Serv_downloadFromERP download = new Serv_downloadFromERP(getParent());
+            download.execute();
+
+            Toast.makeText(this, "Customers successfully downloaded.", Toast.LENGTH_SHORT).show();
             return true;
         }
 

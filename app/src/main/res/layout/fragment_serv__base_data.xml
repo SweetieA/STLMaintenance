@@ -72,36 +72,14 @@
                 android:text="@string/customer"
                 android:textSize="@dimen/ordinaryTextsize" />
 
-            <EditText
-                android:id="@+id/customerEditText"
+            <AutoCompleteTextView
+                android:id="@+id/accntAutoCompleteTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="text|textPersonName" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_marginEnd="15dp"
-                android:text="@string/customerAccnt"
-                android:textSize="@dimen/ordinaryTextsize" />
-
-            <EditText
-                android:id="@+id/siteIdEditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="text" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"

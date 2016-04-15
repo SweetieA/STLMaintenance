@@ -14,9 +14,6 @@ public class uploadMainToERP extends AsyncTask<String, Integer, Void> {
     String file;
     String Maintenance_Info;
     String Task;
-    String Service_Info;
-    String Servicing;
-    String Replacement;
 
     public uploadMainToERP(Context c){
         context = c;
