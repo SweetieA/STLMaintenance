@@ -1,0 +1,77 @@
+package com.application.sweetiean.stlmaintenance;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class SignupActivity extends AppCompatActivity {
+
+    EditText username, password, confirmPassword;
+    String setUsername, setPass, confirmPass;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+
+        init();
+
+    }
+
+    public void init(){
+        username = (EditText) findViewById(R.id.setUsernameEditText);
+        password = (EditText) findViewById(R.id.setPasswordEditText);
+        confirmPassword = (EditText) findViewById(R.id.confirmPassEditText);
+    }
+
+    public void appSignup(View view) {
+
+        setUsername = username.getText().toString();
+        setPass = password.getText().toString();
+        confirmPass = confirmPassword.getText().toString();
+
+        if(setUsername.length()==0 || setPass.length()==0 || confirmPass.length()==0){
+
+            Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_LONG).show();
+
+        }else if(!setPass.equals(confirmPass)){
+
+            Toast.makeText(this, "Passwords don't match", Toast.LENGTH_LONG).show();
+
+        }else{
+
+            //call hashing method and call method to save database
+        }
+    }
+
+    public void returnToLogin(View view) {
+
+        Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(i);
+    }
+
+    public String md5(String password) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+}

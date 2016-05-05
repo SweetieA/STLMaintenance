@@ -58,7 +58,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MaintenanceActivity"
             android:screenOrientation="portrait"
@@ -75,7 +75,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.application.sweetiean.stlmaintenance.MainActivity" />
         </activity>
-        <activity android:name="com.application.sweetiean.stlservicing.DisplayOverviewActivity"></activity>
+        <activity android:name="com.application.sweetiean.stlservicing.DisplayOverviewActivity" />
         <activity
             android:name="com.application.sweetiean.stlservicing.STLSignatureActivity"
             android:label="STL Signature">
@@ -100,7 +100,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.application.sweetiean.stlservicing.ServicingActivity" />
         </activity>
-        <activity android:name=".login"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity"></activity>
     </application>
 
 </manifest>

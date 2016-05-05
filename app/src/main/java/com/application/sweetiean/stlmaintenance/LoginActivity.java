@@ -1,16 +1,19 @@
 package com.application.sweetiean.stlmaintenance;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     EditText username, password;
+    TextView signup;
     Button login;
     int counter = 3;
 
@@ -27,6 +30,16 @@ public class login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         login = (Button) findViewById(R.id.loginButton);
+        signup = (TextView) findViewById(R.id.signUpTextView);
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+                signup.setTextColor(Color.MAGENTA);
+            }
+        });
+
     }
 
     public void appLogin(View v) {

@@ -184,8 +184,8 @@ public class OverviewFragment extends ListFragment {
         //The easiest way to send an e-mail is to create an Intent of type ACTION_SEND.
 
         Intent sendEmail = new Intent(Intent.ACTION_SEND);
-        sendEmail.putExtra(Intent.EXTRA_SUBJECT, "Maintenance Report Automatically Sent From Tablet");
-        sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"YoavAv@stlghana.com", "matanwe@stlghana.com", "alexanderam@stlghana.com", "kennethda@stlghana.com", "valeryro@stlghana.com", "frankow@stlghana.com", "elad@stlghana.com"});
+        sendEmail.putExtra(Intent.EXTRA_SUBJECT, "Maintenance Report Automatically Sent From Tablet, CASE NUMBER" + _sysAid);
+        sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"sweetiean@stlghana.com", "perja@stlghana.com", "YoavAv@stlghana.com", "matanwe@stlghana.com", "alexanderam@stlghana.com", "kennethda@stlghana.com", "valeryro@stlghana.com", "frankow@stlghana.com", "elad@stlghana.com"});
         sendEmail.putExtra(Intent.EXTRA_TEXT, "Mail with an attachment CASE NUMBER: " + _sysAid);
         //to attach a single file, we add some extended data to our intent:
         File attachment = new File(Environment.getExternalStorageDirectory().getPath() + "/" +this.getPDFFileName()+".pdf");

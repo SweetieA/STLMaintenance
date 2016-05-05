@@ -24,7 +24,7 @@ public class MaintenanceAppDB {
 
     public static SQLiteDatabase maintenanceAppDatabase;
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "maintenance_app_db";
 
     public static final String TABLE_MAIN_INFO = "Maintenance_Base_Data_Table";
@@ -37,6 +37,8 @@ public class MaintenanceAppDB {
 
     public static final String TABLE_CUSTOMERS = "Customer_Table";
     public static final String TABLE_EQUIPMENT = "Equipment_Table";
+
+    public static final String TABLE_USERS = "Users_Table";
 
     //COMMON FIELDS
     public static final String ROW_ID = "_id";
@@ -121,6 +123,11 @@ public class MaintenanceAppDB {
     //ITEMS FIELDS
     public static final String ITEM_NAME = "Item_Name";
     public static final String ITEM_NUMBER = "Item_ID";
+
+    //USERS FIELDS
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+
 
 
     public long createBaseDataRecord(String sql_date, String sql_sysaid, String sql_taskType, String sql_customer,
@@ -957,6 +964,13 @@ public class MaintenanceAppDB {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + "("
+                    + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + USERNAME + " TEXT, "
+                    + PASSWORD + " TEXT);"
+            );
+            //onCreate(db);
 
         }
     }
