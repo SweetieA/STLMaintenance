@@ -47,6 +47,9 @@ public class SignupActivity extends AppCompatActivity {
         }else{
 
             //call hashing method and call method to save database
+            insertUserData();
+            Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+            startActivity(i);
         }
     }
 
@@ -56,7 +59,7 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public String md5(String password) {
+    public static String md5(String password) {
         try {
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -73,5 +76,17 @@ public class SignupActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public void insertUserData(){
+
+        String sql_username = setUsername;
+        String sql_password = md5(setPass);
+
+        MaintenanceAppDB user_record = new MaintenanceAppDB(this);
+        user_record.openForRead();
+        user_record.createUserRecord(sql_username, sql_password);
+        user_record.close();
+
     }
 }

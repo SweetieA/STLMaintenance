@@ -806,7 +806,31 @@ public class MaintenanceAppDB {
         return result;
     }
 
+    public long createUserRecord(String sql_username, String sql_password) {
 
+        ContentValues cv = new ContentValues();
+
+        cv.put(USERNAME, sql_username);
+        cv.put(PASSWORD, sql_password);
+
+
+        return maintenanceAppDatabase.insert(TABLE_USERS, null, cv);
+    }
+
+
+    public String getSinlgeEntry(String username)
+    {
+        Cursor cursor = maintenanceAppDatabase.query(TABLE_USERS, null, USERNAME + "=?", new String[]{username}, null, null, null);
+        if(cursor.getCount()<1) // UserName Not Exist
+        {
+            cursor.close();
+            return "USER DOES NOT EXIST";
+        }
+        cursor.moveToFirst();
+        String password= cursor.getString(cursor.getColumnIndex(PASSWORD));
+        cursor.close();
+        return password;
+    }
 
     private class DbHelper extends SQLiteOpenHelper{
 

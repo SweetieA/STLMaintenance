@@ -43,21 +43,31 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void appLogin(View v) {
-        if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
 
-            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+        String getUserName = username.getText().toString();
+        String getPassword = SignupActivity.md5(password.getText().toString());
+        MaintenanceAppDB user_record = new MaintenanceAppDB(this);
+        user_record.openForRead();
+
+        String storedPassword = user_record.getSinlgeEntry(getUserName);
+
+        if(getPassword.equals(storedPassword))
+        {
+            Toast.makeText(LoginActivity.this, "Congrats: Login Successfull", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
-        } else {
-
-            Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(LoginActivity.this, "User Name and Password does not match", Toast.LENGTH_LONG).show();
             counter--;
 
             if (counter == 0) {
                 login.setEnabled(false);
             }
         }
+        user_record.close();
     }
 
 }
