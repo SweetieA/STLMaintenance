@@ -54,17 +54,21 @@ public class LoginActivity extends AppCompatActivity {
         if(getPassword.equals(storedPassword))
         {
             Toast.makeText(LoginActivity.this, "Congrats: Login Successfull", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+
+            password.setText("");
 
         }
         else
         {
             Toast.makeText(LoginActivity.this, "User Name and Password does not match", Toast.LENGTH_LONG).show();
             counter--;
+            Toast.makeText(LoginActivity.this, "You have " + counter + " trials more", Toast.LENGTH_LONG).show();
 
             if (counter == 0) {
                 login.setEnabled(false);
+                Toast.makeText(LoginActivity.this, "Login Button disabled, close the app and start again.", Toast.LENGTH_LONG).show();
             }
         }
         user_record.close();

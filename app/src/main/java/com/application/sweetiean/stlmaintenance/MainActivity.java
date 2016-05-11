@@ -45,4 +45,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(startServicing);
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
+
 }
