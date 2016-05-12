@@ -430,6 +430,12 @@ public class MaintenanceActivity extends AppCompatActivity {
             Toast.makeText(this, "Items successfully downloaded.", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.logout) {
+            finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

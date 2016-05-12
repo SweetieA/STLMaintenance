@@ -129,9 +129,10 @@ public class OverviewFragment extends ListFragment {
         sysaididContext = StringArray.get(i).toString();
 
         menu.add(0, v.getId(), 0, "Show Report");
-        menu.add(0, v.getId(), 0, "Send as attachment");
+        menu.add(0, v.getId(), 0, "Send as Attachment");
         menu.add(0, v.getId(), 0, "Upload to ERP");
-        menu.add(0, v.getId(), 0, "Upload report via webservice");
+        menu.add(0, v.getId(), 0, "Upload Report to ERP");
+        menu.add(0, v.getId(), 0, "Delete Record");
     }
 
 
@@ -172,6 +173,12 @@ public class OverviewFragment extends ListFragment {
             itemClicked = "uploadMain_data";
             uploadMainToERP uploadMainToERP = new uploadMainToERP(getActivity());
             uploadMainToERP.execute();
+
+        }
+        if(item.getTitle()=="Delete Record")
+        {
+
+
 
         }
 

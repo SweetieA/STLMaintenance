@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.application.sweetiean.stlmaintenance.LoginActivity;
 import com.application.sweetiean.stlmaintenance.MaintenanceAppDB;
 import com.application.sweetiean.stlmaintenance.R;
 import com.application.sweetiean.stlmaintenance.Utility;
@@ -443,6 +444,12 @@ public class ServicingActivity extends AppCompatActivity{
             download.execute();
 
             Toast.makeText(this, "Customers successfully downloaded.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.logout) {
+            finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
 
