@@ -190,7 +190,7 @@ public class Serv_OverviewFragment extends Fragment {
 
         Intent sendEmail = new Intent(Intent.ACTION_SEND);
         sendEmail.putExtra(Intent.EXTRA_SUBJECT, "Service Report Automatically Sent From Tablet");
-        sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"perja@stlghana.com", "GavrielKa@stlghana.com", "valeryro@stlghana.com", "frankow@stlghana.com", "elad@stlghana.com"});
+        sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"perja@stlghana.com", "GavrielKa@stlghana.com", "peterte@stlghana.com"});
         sendEmail.putExtra(Intent.EXTRA_TEXT, "Mail with an attachment CASE NUMBER: " + _sysAid);
         //to attach a single file, we add some extended data to our intent:
         File attachment = new File(Environment.getExternalStorageDirectory().getPath() + "/" +this.getPDFFileName()+".pdf");

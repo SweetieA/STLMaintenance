@@ -48,6 +48,28 @@ public class Utility {
 
     }
 
+    public static String getTodaysDatenoformat() {
+
+        final Calendar c = Calendar.getInstance();
+        int yr = c.get(Calendar.YEAR);
+        int mnth = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String m = String.valueOf(mnth);
+        String d = String.valueOf(day);
+
+        if (mnth <= 9) {
+            m = "0" + m;
+        }
+        if (day <= 9) {
+            d = "0" + d;
+        }
+
+        String date = d + m + String.valueOf(yr);
+
+        return date;
+
+    }
+
     public static String getCurrentTime() {
 
         final Calendar c = Calendar.getInstance();

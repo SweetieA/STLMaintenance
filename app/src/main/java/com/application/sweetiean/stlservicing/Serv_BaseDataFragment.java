@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -95,6 +96,7 @@ public class Serv_BaseDataFragment extends Fragment implements OnMapReadyCallbac
             sysaid.setError("Sysaid Id is required!");
         }
 
+
         customer = (AutoCompleteTextView)view.findViewById(R.id.accntAutoCompleteTextView);
         if(customer.getText().toString().length() == 0){
             customer.setError("Customer is required!");
@@ -121,6 +123,25 @@ public class Serv_BaseDataFragment extends Fragment implements OnMapReadyCallbac
         ArrayAdapter<CharSequence> taskAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.taskTypeArray, android.R.layout.simple_spinner_item);
         taskAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         taskSpinner.setAdapter(taskAdapter);
+
+        taskSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(parent.getSelectedItem().toString().equals("Preventive Maintenance")){
+                    sysaid.setText(Utility.getTodaysDatenoformat()+Utility.getCurrentTime()+ServicingActivity.DeviceId);
+                }else if(parent.getSelectedItem().toString().equals("On Call")){
+                    sysaid.getText().clear();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         regionSpinner = (Spinner)view.findViewById(R.id.regionSpinner);
         ArrayAdapter<CharSequence> regionAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.regionArray, android.R.layout.simple_spinner_item);

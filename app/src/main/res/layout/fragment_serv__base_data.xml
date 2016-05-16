@@ -24,15 +24,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/sysaid"
+                android:text="@string/tasktype"
                 android:textSize="@dimen/ordinaryTextsize" />
 
-            <EditText
-                android:id="@+id/sysaidIdEditText"
+            <Spinner
+                android:id="@+id/taskTypeSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="text" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -47,16 +46,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/tasktype"
+                android:text="@string/sysaid"
                 android:textSize="@dimen/ordinaryTextsize" />
 
-            <Spinner
-                android:id="@+id/taskTypeSpinner"
+            <EditText
+                android:id="@+id/sysaidIdEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:inputType="text" />
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="fill_parent"
