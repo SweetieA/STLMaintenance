@@ -1,6 +1,8 @@
 package com.application.sweetiean.stlmaintenance;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +14,11 @@ import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import com.application.sweetiean.stlservicing.OverviewAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,11 +35,13 @@ public class OverviewFragment extends ListFragment {
     View view;
     ListView overview_display;
     // Arraylist for overviews
-    private ArrayList<ArrayList<String>> overList;
-    private ArrayList<String> sysid;
-    private ArrayList<String> engName;
-    private ArrayList<String> taskType;
-    private ArrayList<String> date;
+    private ArrayList<ArrayList<String>> overList = new ArrayList<ArrayList<String>>();
+    private ArrayList<String> sysid = new ArrayList<String>();
+    private ArrayList<String> engName = new ArrayList<String>();
+    private ArrayList<String> taskType = new ArrayList<String>();
+    private ArrayList<String> date = new ArrayList<String>();
+    public static ArrayList<Integer> tagList = new ArrayList<Integer>();
+    //private ArrayList<String> tag;
     private MaintenanceAppDB db;
     private SQLiteDatabase sqldb;
     private OverviewAdapter adapter;
@@ -67,6 +70,27 @@ public class OverviewFragment extends ListFragment {
 
     private void init() {
         overview_display = (ListView) view.findViewById(android.R.id.list);
+        overview_display.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
 
         db = new MaintenanceAppDB(this.getActivity());
         sqldb = db.openForRead();
@@ -74,11 +98,11 @@ public class OverviewFragment extends ListFragment {
             Cursor cursor = sqldb.query(MaintenanceAppDB.TABLE_MAIN_INFO,
                     new String[]{MaintenanceAppDB.SYSAID_ID, MaintenanceAppDB.TASK_TYPE, MaintenanceAppDB.STL_REP_NAME, MaintenanceAppDB.DATE}, null, null, null, null, null);
 
-            overList = new ArrayList<ArrayList<String>>();
+            /*overList = new ArrayList<ArrayList<String>>();
             sysid = new ArrayList<String>();
             date = new ArrayList<String>();
             engName = new ArrayList<String>();
-            taskType = new ArrayList<String>();
+            taskType = new ArrayList<String>();*/
 
             if (cursor.moveToFirst()) {
                 do {
@@ -100,8 +124,20 @@ public class OverviewFragment extends ListFragment {
         }
 
 
+
+        /*adapter = new OverviewAdapter(this.getActivity(), overList);
+
+        //adding the various indexes sequentially to our UI
+        for(int j=0; j<sysid.size();j++){
+            tagList.add(j);
+        }
+        overview_display.setAdapter(adapter);*/
+
         if (overList.size() != 0) {
             adapter = new OverviewAdapter(this.getActivity(), overList);
+            for(int j=0; j<sysid.size();j++){
+            tagList.add(j);
+        }
             overview_display.setAdapter(adapter);
         }
 
@@ -132,7 +168,7 @@ public class OverviewFragment extends ListFragment {
         menu.add(0, v.getId(), 0, "Send as Attachment");
         menu.add(0, v.getId(), 0, "Upload to ERP");
         menu.add(0, v.getId(), 0, "Upload Report to ERP");
-        menu.add(0, v.getId(), 0, "Delete Record");
+        //menu.add(0, v.getId(), 0, "Delete Record");
     }
 
 
@@ -151,7 +187,7 @@ public class OverviewFragment extends ListFragment {
             startActivity(intent);
         }
 
-        if(item.getTitle()=="Upload report via webservice")
+        if(item.getTitle()=="Upload Report to ERP")
         {
             itemClicked = "uploadMain_file";
 
@@ -161,7 +197,7 @@ public class OverviewFragment extends ListFragment {
         }
 
 
-        if(item.getTitle()=="Send as attachment")
+        if(item.getTitle()=="Send as Attachment")
         {
 
             this.sendMail(this.getPDFFileName());
@@ -175,14 +211,58 @@ public class OverviewFragment extends ListFragment {
             uploadMainToERP.execute();
 
         }
-        if(item.getTitle()=="Delete Record")
+        /*if(item.getTitle()=="Delete Record")
         {
-
-
-
-        }
+            if (overList.size() != 0) {
+                String stringVal = String.valueOf(OverviewAdapter.placeHolder.tag.getText());
+                int val = Integer.parseInt(stringVal);
+                deleteSingleListItem(val);
+            }
+        }*/
 
         return true;
+    }
+
+
+    public void deleteSingleListItem(int pos){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
+        alertDialog.setTitle("Delete "+ this.getPDFFileName());
+        alertDialog.setMessage("Do you want to delete?");
+
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //delete the row from the database
+                MaintenanceAppDB db = new MaintenanceAppDB(getActivity());
+                db.deleteInfoRecord_bySysaid(getPDFFileName());
+                db.deleteTaskRecord_bySysaid(getPDFFileName());
+
+                //delete the row from the records ArrayList
+
+                /*ArrayList<String> templist=new ArrayList<String>();
+                for (int i = 0; i < overList.size(); i++)
+                    templist.add(adapter.list.get(overList.get(i)));
+
+                adapter.list.removeAll(templist);*/
+
+
+                //notify listview of dataset changed
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
+
+
+
     }
 
 
@@ -191,7 +271,7 @@ public class OverviewFragment extends ListFragment {
         //The easiest way to send an e-mail is to create an Intent of type ACTION_SEND.
 
         Intent sendEmail = new Intent(Intent.ACTION_SEND);
-        sendEmail.putExtra(Intent.EXTRA_SUBJECT, "Maintenance Report Automatically Sent From Tablet, CASE NUMBER" + _sysAid);
+        sendEmail.putExtra(Intent.EXTRA_SUBJECT, "Maintenance Report Automatically Sent From Tablet, CASE NUMBER " + _sysAid);
         sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"sweetiean@stlghana.com", "perja@stlghana.com", "YoavAv@stlghana.com", "matanwe@stlghana.com", "alexanderam@stlghana.com", "kennethda@stlghana.com", "valeryro@stlghana.com", "frankow@stlghana.com", "elad@stlghana.com"});
         sendEmail.putExtra(Intent.EXTRA_TEXT, "Mail with an attachment CASE NUMBER: " + _sysAid);
         //to attach a single file, we add some extended data to our intent:

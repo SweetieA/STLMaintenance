@@ -66,16 +66,34 @@ public class TaskFragment extends Fragment {
         return view;
     }
 
-    private void init() {
+    public void init() {
         task = (TextView)view.findViewById(R.id.taskTextView);
         maintenanceType = (Spinner) view.findViewById(R.id.maintenanceSpinner);
+
         genHours = (LinearLayout)view.findViewById(R.id.genRunHrsLinearLayout);
+
         battVolt = (LinearLayout)view.findViewById(R.id.batteryVoltLinearLayout);
+
         inventory = (EditText)view.findViewById(R.id.inventoryEditText);
+        if(inventory.getText().toString().length() == 0){
+            inventory.setError("Inventory is required!");
+        }
+
         genHrs = (EditText)view.findViewById(R.id.genRunHrsEditText);
+        if(genHrs.getText().toString().length() == 0){
+            genHrs.setError("Generator Run Hours is required!");
+        }
+
         batVolt = (EditText)view.findViewById(R.id.batteryVoltEditText);
+        if(batVolt.getText().toString().length() == 0){
+            batVolt.setError("Battery Voltage is required!");
+        }
 
         equipment = (AutoCompleteTextView) view.findViewById(R.id.equipmentAutoCompleteTextView);
+        if(equipment.getText().toString().length() == 0){
+            equipment.setError("Equipment is required!");
+        }
+
         MaintenanceAppDB sqlitedb = new MaintenanceAppDB(this.getActivity());
         sqlitedb.openForRead();
 
@@ -91,7 +109,14 @@ public class TaskFragment extends Fragment {
         equipment.setThreshold(1);
 
         quantity = (EditText)view.findViewById(R.id.quantityEditText);
+        if(quantity.getText().toString().length() == 0){
+            quantity.setError("Quantity is required!");
+        }
+
         remarks = (EditText)view.findViewById(R.id.remarksEditText);
+        if(remarks.getText().toString().length() == 0){
+            remarks.setError("Remarks is required!");
+        }
 
         bPic1 = (ImageView)view.findViewById(R.id.Img1);
         bPic2 = (ImageView)view.findViewById(R.id.Img2);
@@ -105,14 +130,47 @@ public class TaskFragment extends Fragment {
         saveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                main_insertToTask_db();
-                Toast.makeText(getActivity(), "Item Added", Toast.LENGTH_SHORT).show();
-                inventory.setText("");
-                genHrs.setText("");
-                batVolt.setText("");
-                equipment.setText("");
-                quantity.setText("");
-                remarks.setText("");
+                boolean insert = true;
+
+                if(inventory.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Inventory is required", Toast.LENGTH_SHORT).show();
+
+                }
+                if(genHrs.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Generator Run Hours is required", Toast.LENGTH_SHORT).show();
+
+                }
+                if(batVolt.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Battery Voltage is required", Toast.LENGTH_SHORT).show();
+
+                }
+                if(equipment.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Equipment is required", Toast.LENGTH_SHORT).show();
+
+                }
+                if(quantity.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Quantity is required", Toast.LENGTH_SHORT).show();
+
+                }
+                if(remarks.getText().toString().length() == 0){
+                    insert = false;
+                    Toast.makeText(getActivity(), "Remarks is required", Toast.LENGTH_SHORT).show();
+
+                }else if (insert) {
+                    main_insertToTask_db();
+                    Toast.makeText(getActivity(), "Item Added", Toast.LENGTH_SHORT).show();
+                    inventory.setText("");
+                    genHrs.setText("");
+                    batVolt.setText("");
+                    equipment.setText("");
+                    quantity.setText("");
+                    remarks.setText("");
+                }
             }
         });
 

@@ -36,7 +36,7 @@ public class MaintenanceActivity extends AppCompatActivity {
 
     public static Context con;
 
-    static String sysaid, taskType, customer, customerAccount, address, region, phone, email, locationCoordinates, stl_rep_name,
+    static String sysaid, taskType, customer, site, address, region, phone, email, locationCoordinates, stl_rep_name,
             stl_rep_post, stl_rep_sign, client_rep_name, client_rep_post, client_rep_sign, inventory,
             genRunHours, batteryVoltage, maintenanceType, quantity, remarks;
 
@@ -134,6 +134,7 @@ public class MaintenanceActivity extends AppCompatActivity {
         sysaid = BaseDataFragment.sysaid.getText().toString();
         taskType = BaseDataFragment.taskSpinner.getSelectedItem().toString();
         customer = BaseDataFragment.customer.getText().toString();
+        site = BaseDataFragment.site.getText().toString();
         address = BaseDataFragment.address.getText().toString();
         region = BaseDataFragment.regionSpinner.getSelectedItem().toString();
         phone = BaseDataFragment.phone.getText().toString();
@@ -175,7 +176,7 @@ public class MaintenanceActivity extends AppCompatActivity {
         String sql_sysaid = sysaid;
         String sql_taskType = taskType;
         String sql_customer = customer;
-        String sql_custAccount = customerAccount;
+        String sql_site = site;
         String sql_address = address;
         String sql_region = region;
         String sql_phone = phone;
@@ -190,7 +191,7 @@ public class MaintenanceActivity extends AppCompatActivity {
 
         MaintenanceAppDB base_data_record = new MaintenanceAppDB(this);
         base_data_record.openForRead();
-        base_data_record.createBaseDataRecord(sql_date, sql_sysaid, sql_taskType, sql_customer, sql_custAccount,
+        base_data_record.createBaseDataRecord(sql_date, sql_sysaid, sql_taskType, sql_customer, sql_site,
                 sql_address, sql_region, sql_phone, sql_email, sql_location, sql_stlRepName, sql_stlRepPost,
                 sql_stlRepSign, sql_clientRepName, sql_clientRepPost, sql_clientRepSign);
         base_data_record.close();
@@ -238,7 +239,7 @@ public class MaintenanceActivity extends AppCompatActivity {
                 ContentValues cv = new ContentValues();
                 cv.put(MaintenanceAppDB.CUSTOMER_NAME, customer_full);
                 cv.put(MaintenanceAppDB.CUSTOMER_ACCOUNT, custAccount);
-                sqlitedb.maintenanceAppDatabase.insert(MaintenanceAppDB.TABLE_CUSTOMERS, null, cv);
+                MaintenanceAppDB.maintenanceAppDatabase.insert(MaintenanceAppDB.TABLE_CUSTOMERS, null, cv);
             }
 
             int counter = sqlitedb.getCustomersCount();
@@ -356,13 +357,19 @@ public class MaintenanceActivity extends AppCompatActivity {
             Toast.makeText(this, "Sysaid Id is required", Toast.LENGTH_SHORT).show();
         }
 
-        else if(BaseDataFragment.customer.getText().toString().length() == 0){
+        if(BaseDataFragment.customer.getText().toString().length() == 0){
             insert = false;
             Toast.makeText(this, "Customer Name is required", Toast.LENGTH_SHORT).show();
 
         }
 
-        else if(BaseDataFragment.count < 2 && TaskFragment.count <5){
+        if(BaseDataFragment.site.getText().toString().length() == 0){
+            insert = false;
+            Toast.makeText(this, "Site Id is required", Toast.LENGTH_SHORT).show();
+
+        }
+
+        if(BaseDataFragment.count < 2 && TaskFragment.count <5){
             insert = false;
             Toast.makeText(this, "You should have at least 2 Images before and 2 Images after", Toast.LENGTH_SHORT).show();
 

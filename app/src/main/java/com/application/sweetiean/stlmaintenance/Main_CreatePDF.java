@@ -67,6 +67,7 @@ public class Main_CreatePDF {
             document.add(new Paragraph("Customer: " + MaintenanceActivity.customer, font1));
             document.add(new Paragraph("Task Type: " + MaintenanceActivity.taskType, font1));
             document.add(new Paragraph("Sysaid ID: " + MaintenanceActivity.sysaid, font1));
+            document.add(new Paragraph("Site ID: " + MaintenanceActivity.site, font1));
             document.add(new Paragraph("Address: " + MaintenanceActivity.address, font1));
             document.add(new Paragraph("Region: " + MaintenanceActivity.region, font1));
             document.add(new Paragraph("Phone: " + MaintenanceActivity.phone, font1));

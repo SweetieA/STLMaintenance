@@ -24,11 +24,11 @@ public class MaintenanceAppDB {
 
     public static SQLiteDatabase maintenanceAppDatabase;
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "maintenance_app_db";
 
     public static final String TABLE_MAIN_INFO = "Maintenance_Base_Data_Table";
-    private static final String TABLE_MAIN_TASK = "Task_Table";
+    public static final String TABLE_MAIN_TASK = "Task_Table";
     private static final String TABLE_MAIN_IMAGES = "Images";
     
     public static final String TABLE_SERV_INFO = "Service_Base_Data_Table";
@@ -45,7 +45,7 @@ public class MaintenanceAppDB {
     public static final String SYSAID_ID = "Sysaid_Id";
     public static final String TASK_TYPE = "Task_Type";
     public static final String CUSTOMER = "Customer";
-    //public static final String SITE_ID = "Site_Id";
+    public static final String SITE_ID = "Site_Id";
     public static final String ADDRESS = "Address";
     public static final String REGION = "Region";
     public static final String LOCATION = "Location_Coordinates";
@@ -131,7 +131,7 @@ public class MaintenanceAppDB {
 
 
     public long createBaseDataRecord(String sql_date, String sql_sysaid, String sql_taskType, String sql_customer,
-                                     String sql_custAccount, String sql_address, String sql_region, String sql_phone,
+                                     String sql_site, String sql_address, String sql_region, String sql_phone,
                                      String sql_email, String sql_location, String sql_stlRepName, String sql_stlRepPost,
                                      String sql_stlRepSign, String sql_clientRepName, String sql_clientRepPost,
                                      String sql_clientRepSign) {
@@ -142,7 +142,7 @@ public class MaintenanceAppDB {
         cv.put(SYSAID_ID, sql_sysaid);
         cv.put(TASK_TYPE, sql_taskType);
         cv.put(CUSTOMER, sql_customer);
-        cv.put(CUSTOMER_ACCOUNT, sql_custAccount);
+        cv.put(SITE_ID, sql_site);
         cv.put(ADDRESS, sql_address);
         cv.put(REGION, sql_region);
         cv.put(PHONE, sql_phone);
@@ -427,6 +427,16 @@ public class MaintenanceAppDB {
         }
     }
 
+    public void deleteInfoRecord_bySysaid(String _sysAidId){
+        maintenanceAppDatabase = openForRead();
+        maintenanceAppDatabase.delete(TABLE_MAIN_INFO, SYSAID_ID + "=?", new String[] { _sysAidId });
+        this.close();
+    }
+    public void deleteTaskRecord_bySysaid(String _sysAidId){
+        maintenanceAppDatabase = openForRead();
+        maintenanceAppDatabase.delete(TABLE_MAIN_TASK, SYSAID_ID + "=?", new String[] { _sysAidId });
+        this.close();
+    }
 
     public String getTaskDataArray_noGen(String _sysAidId) {
 
@@ -543,7 +553,7 @@ public class MaintenanceAppDB {
 
     //Maintenance
     public String getMaintenanceInfoRecord(String _sysAidId)  {
-        String[] columns = new String[]{DATE, SYSAID_ID, TASK_TYPE, CUSTOMER, CUSTOMER_ACCOUNT, ADDRESS, REGION,
+        String[] columns = new String[]{DATE, SYSAID_ID, TASK_TYPE, CUSTOMER, SITE_ID, ADDRESS, REGION,
                 PHONE, EMAIL, LOCATION, STL_REP_NAME, STL_REP_POST, CLIENT_REP_NAME, CLIENT_REP_POST};
 
         Cursor c;
@@ -558,7 +568,7 @@ public class MaintenanceAppDB {
         int iSysaid = c.getColumnIndex(SYSAID_ID);
         int iTask = c.getColumnIndex(TASK_TYPE);
         int iCustName = c.getColumnIndex(CUSTOMER);
-        int iSite = c.getColumnIndex(CUSTOMER_ACCOUNT);
+        int iSite = c.getColumnIndex(SITE_ID);
         int iAddress = c.getColumnIndex(ADDRESS);
         int iRegion = c.getColumnIndex(REGION);
         int iPhone = c.getColumnIndex(PHONE);
@@ -849,7 +859,7 @@ public class MaintenanceAppDB {
                     + SYSAID_ID + " TEXT, "
                     + TASK_TYPE + " TEXT, "
                     + CUSTOMER + " TEXT, "
-                    + CUSTOMER_ACCOUNT + " TEXT, "
+                    + SITE_ID + " TEXT, "
                     + ADDRESS + " TEXT, "
                     + REGION + " TEXT, "
                     + PHONE + " TEXT, "
@@ -984,17 +994,18 @@ public class MaintenanceAppDB {
 
             );
 
+            db.execSQL("CREATE TABLE " + TABLE_USERS + "("
+                    + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + USERNAME + " TEXT, "
+                    + PASSWORD + " TEXT);"
+            );
+
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + "("
-                    + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + USERNAME + " TEXT, "
-                    + PASSWORD + " TEXT);"
-            );
-            //onCreate(db);
+
 
         }
     }

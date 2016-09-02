@@ -60,7 +60,6 @@
 
         <LinearLayout
             android:id="@+id/genRunHrsLinearLayout"
-            android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -85,7 +84,6 @@
 
         <LinearLayout
             android:id="@+id/batteryVoltLinearLayout"
-            android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

@@ -34,8 +34,8 @@ public class mTasktypeListner implements AdapterView.OnItemSelectedListener {
         else if (parent.getSelectedItem().toString().equals("Generator Maintenance")) {
 
             TaskFragment.task.setText(parent.getItemAtPosition(position).toString());
-            TaskFragment.genHours.setVisibility(View.VISIBLE);
-            TaskFragment.battVolt.setVisibility(View.VISIBLE);
+            //TaskFragment.genHours.setVisibility(View.VISIBLE);
+            //TaskFragment.battVolt.setVisibility(View.VISIBLE);
 
             ArrayAdapter<CharSequence> taskAdapter = ArrayAdapter.createFromResource(TaskFragment.view.getContext(), R.array.genMaintenanceArray, android.R.layout.simple_spinner_item);
             taskAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

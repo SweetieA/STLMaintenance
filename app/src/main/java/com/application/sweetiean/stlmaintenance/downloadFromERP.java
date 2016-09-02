@@ -34,10 +34,6 @@ public class downloadFromERP extends AsyncTask<String, Integer, Void> {
                 result = MaintenanceActivity.Main_axcall.equipment();
                 MaintenanceActivity.jsonString = result;
             }
-            if(ServicingActivity.itemClicked.equals("customers")){
-                result = ServicingActivity.Serv_axcall.customers();
-                ServicingActivity.jsonString = result;
-            }
         }
         catch (Exception e){
 
@@ -57,10 +53,6 @@ public class downloadFromERP extends AsyncTask<String, Integer, Void> {
         if(MaintenanceActivity.itemClicked.equals("items")){
             MaintenanceActivity.jsonString = result;
             MaintenanceActivity.InsertItemsIntoDB();
-        }
-        if(ServicingActivity.itemClicked.equals("customers")) {
-            ServicingActivity.jsonString = result;
-            ServicingActivity.InsertCustIntoDB();
         }
 
 

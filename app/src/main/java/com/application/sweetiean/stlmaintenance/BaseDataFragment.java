@@ -50,7 +50,7 @@ public class BaseDataFragment extends Fragment implements OnMapReadyCallback {
 
     View view;
     public static ImageView bPic1, bPic2, bPic3;
-    public static EditText sysaid, address, phone, email;
+    public static EditText sysaid, address, phone, email, site;
     public static AutoCompleteTextView customer;
     public static Spinner taskSpinner, regionSpinner;
     public static TextView locationCoordinates;
@@ -92,6 +92,12 @@ public class BaseDataFragment extends Fragment implements OnMapReadyCallback {
         if(sysaid.getText().toString().length() == 0){
             sysaid.setError("Sysaid Id is required!");
         }
+
+        site = (EditText)view.findViewById(R.id.siteIdEditText);
+        if(site.getText().toString().length() == 0){
+            site.setError("Site Id is required!");
+        }
+
         customer = (AutoCompleteTextView)view.findViewById(R.id.accntAutoCompleteTextView);
         if(customer.getText().toString().length() == 0){
             customer.setError("Customer is required!");

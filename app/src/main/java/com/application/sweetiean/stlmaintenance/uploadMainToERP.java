@@ -75,7 +75,17 @@ public class uploadMainToERP extends AsyncTask<String, Integer, Void> {
             Toast.makeText(context, Task, Toast.LENGTH_SHORT).show();
             Toast.makeText(context, "Upload to ERP complete!!!", Toast.LENGTH_LONG).show();
 
+           /* if(Maintenance_Info.equals("OK")&& Task.equals("OK")){
+                //set listitem background to some colour
+            }*/
+
         }
+
+        /*if(Maintenance_Info.equals("OK")&& Task.equals("OK")&&file.equals("OK")){
+            //set listitem background to green
+        }*/
+
+
 
 
 

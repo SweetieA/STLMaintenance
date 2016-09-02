@@ -22,7 +22,7 @@
     <string name="tasktype">Task Type:&#160; </string>
     <string name="textview">TextView</string>
 
-    <!-- SERVICING BASEDATA -->
+    <!-- DELETE -->
     <string-array name="taskTypeArray">
         <item>Preventive Maintenance</item>
         <item>On Call</item>
@@ -86,7 +86,7 @@
     <string name="serial_numbers">Serial Numbers: </string>
     <string name="power">Power Supply</string>
     <string name="power_supply">12V DC Power Supply</string>
-    <string name="power_box">12V DC Power Box</string>
+    <string name="power_box">12V DC Power Box</string><!-- DELETE -->
 
 
     <!-- MAINTENANCE BASEDATA -->
@@ -188,6 +188,9 @@
     <string name="position">Position: </string>
     <string name="title_activity_action_settings">Settings</string>
     <string name="Equipment">Equipment</string>
+
+
+
     <string name="sign_up_here">Sign Up here</string>
     <string name="log_in">log in</string>
     <string name="password">Password</string>
@@ -195,6 +198,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="logout">Logout</string>
+    <string name="site">Site Id: </string>
 
 
 </resources>
