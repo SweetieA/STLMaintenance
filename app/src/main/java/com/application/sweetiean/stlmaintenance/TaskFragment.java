@@ -2,6 +2,7 @@ package com.application.sweetiean.stlmaintenance;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,8 +19,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +50,8 @@ public class TaskFragment extends Fragment {
     static int count = 4;
     public static final int CAMERADATA = 1;
 
+    final static int[] toView = new int[] { android.R.id.text1 };
+    final static String[] fromCol = new String[] { MaintenanceAppDB.ITEM_NAME };
 
     public TaskFragment() {
         // Required empty public constructor
@@ -94,7 +99,7 @@ public class TaskFragment extends Fragment {
             equipment.setError("Equipment is required!");
         }
 
-        MaintenanceAppDB sqlitedb = new MaintenanceAppDB(this.getActivity());
+        final MaintenanceAppDB sqlitedb = new MaintenanceAppDB(this.getActivity());
         sqlitedb.openForRead();
 
         String[] items = sqlitedb.getAllItemNames();
@@ -104,9 +109,29 @@ public class TaskFragment extends Fragment {
             Log.i(this.toString(), items[i]);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, items);
-        equipment.setAdapter(adapter);
+        /*ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, items);
+        equipment.setAdapter(adapter);*/
         equipment.setThreshold(1);
+
+        //simplecursoradapter example
+        SimpleCursorAdapter itemNameAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_dropdown_item_1line, null, fromCol, toView, 0);
+
+
+        itemNameAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+
+            public Cursor runQuery(CharSequence constraint) {
+                return sqlitedb.suggestItemCompletions(constraint);
+            }
+        });
+
+        itemNameAdapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            public CharSequence convertToString(Cursor cur) {
+                int index = cur.getColumnIndex(MaintenanceAppDB.ITEM_NAME);
+                return cur.getString(index);
+            }});
+        equipment.setAdapter(itemNameAdapter);//end simple cursor adapter
+
 
         quantity = (EditText)view.findViewById(R.id.quantityEditText);
         if(quantity.getText().toString().length() == 0){

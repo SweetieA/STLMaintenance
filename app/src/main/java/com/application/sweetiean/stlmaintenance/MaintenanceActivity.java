@@ -36,6 +36,9 @@ public class MaintenanceActivity extends AppCompatActivity {
 
     public static Context con;
 
+
+
+
     static String sysaid, taskType, customer, site, address, region, phone, email, locationCoordinates, stl_rep_name,
             stl_rep_post, stl_rep_sign, client_rep_name, client_rep_post, client_rep_sign, inventory,
             genRunHours, batteryVoltage, maintenanceType, quantity, remarks;
@@ -426,7 +429,7 @@ public class MaintenanceActivity extends AppCompatActivity {
             downloadFromERP download = new downloadFromERP(getParent());
             download.execute();
 
-            Toast.makeText(this, "Customers successfully downloaded.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Customers successfully downloaded.", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.get_equipment) {
@@ -434,7 +437,7 @@ public class MaintenanceActivity extends AppCompatActivity {
             downloadFromERP download = new downloadFromERP(getParent());
             download.execute();
 
-            Toast.makeText(this, "Items successfully downloaded.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Items successfully downloaded.", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.logout) {
