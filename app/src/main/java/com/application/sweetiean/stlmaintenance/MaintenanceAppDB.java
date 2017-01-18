@@ -842,6 +842,15 @@ public class MaintenanceAppDB {
         return password;
     }
 
+    public Cursor suggestItemCompletions(CharSequence str) {
+        maintenanceAppDatabase = openForRead();
+        String sql = "Select *  FROM "+ TABLE_EQUIPMENT+ " WHERE "+ ITEM_NAME + " LIKE ?";
+        String[]  selectArgs = new String[]{ "%" + str + "%"};
+
+        return maintenanceAppDatabase.rawQuery(sql,selectArgs);
+
+    }
+
     private class DbHelper extends SQLiteOpenHelper{
 
 
